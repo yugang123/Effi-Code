@@ -1,5 +1,9 @@
 {
   "efficoder": {
-    "file_name": "efficoder.json"
+    "file_name": "output.json"
+  },
+  "columns": {
+    "prompt": "instruction",
+    "response": "output"
   }
 }
