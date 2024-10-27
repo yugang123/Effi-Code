@@ -4,6 +4,7 @@ from tqdm import tqdm
 from datasets import load_dataset
 from vllm import LLM, SamplingParams
 import argparse
+import os
 
 batch_size = 64
 # "EffiCoder/CodeLlama-7b-hf-lr5e-6-epoch4-final","meta-llama/CodeLlama-7b-hf","Qwen/Qwen2.5-7B","deepseek-ai/deepseek-coder-6.7b-base",
@@ -75,12 +76,24 @@ if __name__ == "__main__":
         else:
             dataset[i:i+batch_size] = fetch_completion(dataset[i:i+batch_size], llm, sampling_params)
 
-    if "/sft/" in checkpoint:
-        end_name = checkpoint.split("/")[-3]
-    else:
-        end_name = checkpoint.split("/")[-1]
-    with open(f"../../results/humaneval_{end_name}_0.json", "w") as f:
+        if "/sft/" in checkpoint:
+            end_name = checkpoint.split("/")[-3]
+        else:
+            end_name = checkpoint.split("/")[-1]
+
+    # 获取文件的完整路径
+    file_path = f"../../results/humaneval_{end_name}_0.json"
+    # 提取目录路径
+    directory = os.path.dirname(file_path)
+
+    # 如果文件夹不存在，则创建它
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+    # 写入文件
+    with open(file_path, "w") as f:
         json.dump(dataset, f, indent=4)
+
 
 
 # python vllm_humaneval.py  --checkpoint deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct
