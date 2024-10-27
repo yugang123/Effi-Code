@@ -9,7 +9,7 @@ import os
 batch_size = 64
 # "EffiCoder/CodeLlama-7b-hf-lr5e-6-epoch4-final","meta-llama/CodeLlama-7b-hf","Qwen/Qwen2.5-7B","deepseek-ai/deepseek-coder-6.7b-base",
 # "EffiCoder/Qwen2.5-7B-lr5e-6-epoch4-final","EffiCoder/deepseek-coder-6.7b-base-lr5e-6-epoch4-final","EffiCoder/deepseek-coder-6.7b-ins-lr5e-6-epoch4-final","EffiCoder/CodeLlama-7b-hf-lr5e-6-epoch4-final","meta-llama/CodeLlama-7b-hf","Qwen/Qwen2.5-7B",,"deepseek-ai/deepseek-coder-6.7b-instruct"
-checkpoints = ["meta-llama/Llama-3.1-8B-Instruct"]
+checkpoints = ["Yhhhhhhhhh/python_lora_codellama"]
 def construct_prompt_template(inputs, llm, sampling_params):
     outputs = llm.generate(inputs, sampling_params)
     generated_texts = []
@@ -32,8 +32,16 @@ def fetch_completion(data_entry_lists, llm, sampling_params):
 # ```
 # ''')
         inputs_batchs.append(f'''
-Please continue to complete the function.
-{data_entry['prompt']}
+Please continue to complete the function.\n
+{data_entry['prompt']}\n
+The time complexities in order from smallest to largest are:\n
+1. Constant time\n
+2. Logarithmic time\n
+3. Linear time\n
+4. Linearithmic time\n
+5. Quadratic time\n
+6. Cubic time\n
+Time complexity requirement: Where possible, aim to use constant, Logarithmic, linear or linearithmic time complexity algorithms. Avoid quadratic and cubic time complexities unless absolutely necessary. The smaller the time complexity, the better.
 ''')
     completion_lists = construct_prompt_template(inputs_batchs, llm, sampling_params)
     for i in range(len(data_entry_lists)):
@@ -46,7 +54,7 @@ if __name__ == "__main__":
     args.add_argument(
         "--checkpoint",
         type=str,
-        default="m-a-p/OpenCodeInterpreter-DS-1.3B",
+        default="Yhhhhhhhhh/python_lora_codellama",
         required=True,
     )
     args = args.parse_args()
